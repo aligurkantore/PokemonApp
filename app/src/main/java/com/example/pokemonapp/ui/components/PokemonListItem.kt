@@ -14,6 +14,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,11 @@ fun PokemonListItem(
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Row(modifier = Modifier.padding(12.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = pokemon.name,
@@ -47,7 +52,10 @@ fun PokemonListItem(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = pokemon.name, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = pokemon.name,
+                    style = MaterialTheme.typography.titleSmall
+                )
             }
         }
     }

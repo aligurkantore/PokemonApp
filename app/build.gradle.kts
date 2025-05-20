@@ -72,15 +72,12 @@ dependencies {
     implementation(libs.coroutines.android)
 
     implementation(libs.paging.runtime)
-   // implementation(libs.paging.compose)
     implementation (libs.androidx.paging.compose.v100alpha20)
 
     implementation(libs.ui)
     implementation(libs.material3)
 
     implementation(libs.coil.compose)
-
-    implementation (libs.glide.compose)
 
 
     testImplementation(libs.junit)
