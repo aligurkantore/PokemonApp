@@ -9,6 +9,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.pokemonapp.ui.components.PokemonListItem
 
@@ -16,37 +17,36 @@ import com.example.pokemonapp.ui.components.PokemonListItem
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
-    onEvent: (HomeEvent) -> Unit
+    navController: NavController
 ) {
     val context = LocalContext.current
     val state = viewModel.state.collectAsState().value
     val lazyPagingItems = state.pokemonList.collectAsLazyPagingItems()
 
     LaunchedEffect(Unit) {
-       // viewModel.setEvent(HomeEvent.LoadPokemon)
-
         viewModel.effect.collect { effect ->
             when (effect) {
-                is HomeEffect.NavigateToDetail -> {
-                    onEvent(HomeEvent.NavigateToDetailClick(effect.name))
-                }
                 is HomeEffect.ShowFail -> {
-                    Toast.makeText(context, context.getString(effect.message), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(effect.message), Toast.LENGTH_SHORT)
+                        .show()
                 }
+                else -> Unit
             }
         }
     }
 
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = modifier) {
+        modifier = modifier
+    ) {
         items(lazyPagingItems.itemCount) { index ->
             val pokemon = lazyPagingItems[index]
             pokemon?.let {
                 PokemonListItem(
                     pokemon = it,
                     onItemClick = { name ->
-                        onEvent(HomeEvent.NavigateToDetailClick(name))
+                        navController.navigate("detail/$name")
                     }
                 )
             }
